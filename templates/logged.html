@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+{% block title %}
+  Welcome!
+{% endblock %}
+
+{% block content %}
+  <h2>Hello {{ user.name }}</h2>
+{% endblock %}
+
+{% block ops %}
+<a href="{{ url_for("logout")}}" class="btn btn-primary">Log out</a>
+{% endblock %}

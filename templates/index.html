@@ -6,5 +6,18 @@
 {% block content %}
   <h2>Hello!</h2>
   <p>It seems that you are not logged in, so please log in now using the form below.</p>
+  <form action="{{ url_for("login") }}" method="post">
+    <div class="form-group">
+      Login:<br>
+      <input class="form-control" type="text" name="login">
+    </div>
+    <div class="form-group">
+      Password:<br>
+      <input class="form-control" type="password" name="pass">
+    </div>
+    <div class="form-group">
+      <button class="btn btn-primary">Login</button>
+    </div>
+  </form>
   <p>If you may not have an account yet, please <a href="{{ url_for('registrate') }}">registrate</a>!</p>
 {% endblock %}
