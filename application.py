@@ -73,3 +73,12 @@ def logged():
 def logout():
     session.pop('user', None)
     return redirect(url_for('index'))
+
+@app.route("/search",methods=["POST"])
+def search():
+    if session.get('user') == None:
+        return redirect(url_for("index"))
+    search_for=request.form.get("search_for");
+    books=db.execute("SELECT * FROM books WHERE isbn LIKE :search_for OR name LIKE :search_for OR author LIKE :search_for",
+        {"search_for": "%" + search_for + "%"}).fetchall()
+    return render_template("logged.html",user=session.get('user'),books=books)
