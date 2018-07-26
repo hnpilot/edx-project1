@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+{% block title %}
+  Welcome!
+{% endblock %}
+
+{% block content %}
+  <h2>Hello!</h2>
+  <p>It seems that you are not logged in, so please log in now using the form below.</p>
+  <p>If you may not have an account yet, please <a href="{{ url_for('registrate') }}">registrate</a>!</p>
+{% endblock %}

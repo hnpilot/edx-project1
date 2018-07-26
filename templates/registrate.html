@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+{% block title %}
+  Registration
+{% endblock %}
+
+{% block content %}
+  <h2>Registration</h2>
+  <p>Please fill this form and click Registrate-button.</p>
+  <form action={{ url_for("registration") }} method="post">
+    <div class="form-group">
+      First name:<br>
+      <input class="form-control" type="text" name="first">
+    </div>
+    <div class="form-group">
+      Last name:<br>
+      <input class="form-control" type="text" name="last">
+    </div>
+    <div class="form-group">
+      eMail:<br>
+      <input class="form-control" type="email" name="email">
+    </div>
+    <div class="form-group">
+      Login:<br>
+      <input class="form-control" type="text" name="login">
+    </div>
+    <div class="form-group">
+      Password:<br>
+      <input class="form-control" type="password" name="pass">
+    </div>
+    <div class="form-group">
+      <button class="btn btn-primary">Registrate</button>
+    </div>
+  </form>
+{% endblock %}
