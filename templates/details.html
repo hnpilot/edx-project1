@@ -9,6 +9,13 @@
   Author: {{ book.author }}<br>
   Year: {{ book.year }}<br>
   <p>&nbsp;</p>
+  <h3>Goodreads reviews</h3>
+  {% if goodreads.ratings_count>0 %}
+    {{ goodreads.ratings_count }} ratings, average rating {{ goodreads.average_rating }}
+  {% else %}
+    No Goodreads ratings yet.
+  {% endif %}
+  <p>&nbsp;</p>
   <h3>Reviews</h3>
   <table width=70%>
   {% for review in reviews %}
@@ -21,7 +28,7 @@
     <tr><td><p>No reviews so far. Be first to review!</p></td></tr>
   {% endfor %}
 </table>
-  {% if reviewed == 0 %}
+{% if reviewed == 0 %}
   <h3>Make a review!</h3>
 
   <form action="{{ url_for("add_review") }}" method="post">

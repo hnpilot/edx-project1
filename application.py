@@ -1,5 +1,6 @@
 import os
-
+import urllib.request
+import json
 
 from flask import Flask, session, render_template,url_for,request,redirect
 from flask_session import Session
@@ -90,11 +91,14 @@ def details(book_id):
     user=session.get('user').user_id
     book=db.execute("SELECT * FROM books WHERE book_id=:book_id",
         {"book_id": book_id}).fetchone()
+    isbn=book.isbn
+    response = urllib.request.urlopen('https://www.goodreads.com/book/review_counts.json?isbns=' + isbn + '&key=evxAmxQg1ZywCbh2BV9yA').read()
+    goodreads=json.loads(response)
     reviews=db.execute("SELECT * FROM reviews WHERE book=:book_id",
         {"book_id": book_id}).fetchall()
     reviewed=db.execute("SELECT COUNT(*) FROM reviews WHERE book=:book_id AND userid=:user",
         {"book_id": book_id,"user": user}).fetchone()
-    return render_template("details.html",book=book,reviews=reviews,reviewed=reviewed[0])
+    return render_template("details.html",book=book,reviews=reviews,reviewed=reviewed[0],goodreads=goodreads["books"][0])
 
 @app.route("/add_review",methods=["POST"])
 def add_review():
