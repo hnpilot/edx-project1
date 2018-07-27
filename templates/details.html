@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+{% block title %}
+  Book details: {{ book.name }}
+{% endblock %}
+
+{% block content %}
+  <h2>{{ book.name }}</h2>
+  ISBN: {{ book.isbn }}<br>
+  Author: {{ book.author }}<br>
+  Year: {{ book.year }}<br>
+  <p>&nbsp;</p>
+  <h3>Reviews</h3>
+  <table width=70%>
+  {% for review in reviews %}
+    <tr><td width="10%">
+      {% for i in range(review.rating) %}
+        <i class="fa fa-star" style="color: gold;" aria-hidden="true"></i>
+      {% endfor %}
+    </td><td>{{ review.review }}</td></tr>
+  {% else %}
+    <tr><td><p>No reviews so far. Be first to review!</p></td></tr>
+  {% endfor %}
+</table>
+  {% if reviewed == 0 %}
+  <h3>Make a review!</h3>
+
+  <form action="{{ url_for("add_review") }}" method="post">
+    <input type="hidden" name="user_id" value="{{ session.user.user_id }}">
+    <input type="hidden" name="book_id" value="{{ book.book_id }}">
+    <div>
+    <b>Your rating:</b><br>
+    {% for i in range(1,6) %}
+      <div class="radio-inline">
+        <label class="radio-inline"><input type="radio" name="rating" value="{{ i }}">{{ i }}</label>
+      </div>
+    {% endfor %}
+    </div>
+    <div>
+    <b>Your review:</b><br>
+    <textarea name="review" rows="5" cols="50"></textarea>
+    </div>
+    <button class="btn btn-primary">Save review</button>
+  </form>
+  {% endif %}
+  <p>&nbsp;</p>
+  <a href="{{ url_for("logged") }}">Back to search</a>
+{% endblock %}
+
+{% block ops %}
+<a href="{{ url_for("logout")}}" class="btn btn-primary">Log out</a>
+{% endblock %}

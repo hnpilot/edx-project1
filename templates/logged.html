@@ -16,7 +16,7 @@
   </form>
   <table width="60%">
   {% for book in books %}
-    <tr><td>{{ book.isbn }}</td><td>{{ book.name }}</td><td>{{ book.author }}</td><td>{{ book.year }}</td></tr>
+    <tr><td>{{ book.isbn }}</td><td>{{ book.name }}</td><td>{{ book.author }}</td><td>{{ book.year }}</td><td><a href="{{ url_for("details",book_id= book.book_id) }}">Details</a></td></tr>
   {% endfor %}
   </table>
 {% endblock %}

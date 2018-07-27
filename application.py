@@ -82,3 +82,29 @@ def search():
     books=db.execute("SELECT * FROM books WHERE isbn LIKE :search_for OR name LIKE :search_for OR author LIKE :search_for",
         {"search_for": "%" + search_for + "%"}).fetchall()
     return render_template("logged.html",user=session.get('user'),books=books)
+
+@app.route("/details/<int:book_id>")
+def details(book_id):
+    if session.get('user') == None:
+        return redirect(url_for("index"))
+    user=session.get('user').user_id
+    book=db.execute("SELECT * FROM books WHERE book_id=:book_id",
+        {"book_id": book_id}).fetchone()
+    reviews=db.execute("SELECT * FROM reviews WHERE book=:book_id",
+        {"book_id": book_id}).fetchall()
+    reviewed=db.execute("SELECT COUNT(*) FROM reviews WHERE book=:book_id AND userid=:user",
+        {"book_id": book_id,"user": user}).fetchone()
+    return render_template("details.html",book=book,reviews=reviews,reviewed=reviewed[0])
+
+@app.route("/add_review",methods=["POST"])
+def add_review():
+    if session.get('user') == None:
+        return redirect(url_for("index"))
+    review=request.form.get("review")
+    rating=request.form.get("rating")
+    user_id=request.form.get("user_id")
+    book=request.form.get("book_id")
+    db.execute("INSERT INTO reviews (book,userid,rating,review) VALUES(:book, :user_id, :rating, :review)",
+        {"book": book, "user_id": user_id, "rating": rating, "review": review})
+    db.commit()
+    return redirect(url_for("details",book_id=book))
