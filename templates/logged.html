@@ -14,11 +14,15 @@
       <button class="btn btn-primary">Search</button>
     </div>
   </form>
+  {% if searched %}
   <table width="60%">
   {% for book in books %}
     <tr><td>{{ book.isbn }}</td><td>{{ book.name }}</td><td>{{ book.author }}</td><td>{{ book.year }}</td><td><a href="{{ url_for("details",book_id= book.book_id) }}">Details</a></td></tr>
+  {% else %}
+    <tr><td>No books found :( </td></tr>
   {% endfor %}
   </table>
+  {% endif %}
 {% endblock %}
 
 {% block ops %}

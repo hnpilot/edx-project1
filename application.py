@@ -81,7 +81,7 @@ def search():
     search_for=request.form.get("search_for");
     books=db.execute("SELECT * FROM books WHERE isbn LIKE :search_for OR name LIKE :search_for OR author LIKE :search_for",
         {"search_for": "%" + search_for + "%"}).fetchall()
-    return render_template("logged.html",user=session.get('user'),books=books)
+    return render_template("logged.html",user=session.get('user'),books=books,searched=True)
 
 @app.route("/details/<int:book_id>")
 def details(book_id):
