@@ -116,8 +116,12 @@ def add_review():
 @app.route("/api/<string:isbn>")
 def api(isbn):
     bookdata=db.execute("SELECT book_id,name,author,year,isbn FROM books WHERE isbn=:isbn",{"isbn": isbn}).fetchone()
-    if bookdata==None:
+    if bookdata == None:
         abort(404)
-    reviews=db.execute("SELECT COUNT(*) AS cnt,AVG(rating) AS rating FROM reviews WHERE book=:book",{"book": bookdata.book_id}).fetchone()    
-    dict={"title": bookdata.name,"author": bookdata.author,"year": bookdata.year,"isbn": bookdata.isbn,"review_count": reviews.cnt,"average_score": float(reviews.rating)}
+    reviews=db.execute("SELECT COUNT(*) AS cnt,AVG(rating) AS rating FROM reviews WHERE book=:book",{"book": bookdata.book_id}).fetchone()
+    if reviews.rating == None:
+        rating=0.0
+    else:
+        rating=float(reviews.rating)
+    dict={"title": bookdata.name,"author": bookdata.author,"year": bookdata.year,"isbn": bookdata.isbn,"review_count": reviews.cnt,"average_score": rating}
     return json.dumps(dict)
