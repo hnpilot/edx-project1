@@ -2,6 +2,8 @@
 
 Web Programming with Python and JavaScript
 
+The project is in github: https://github.com/hnpilot/edx-project1
+
 This README is arranged in order of requirements to facilitate the reading
 
 (0. ) The layout html is basic page structure and all other layout files are extending it.
