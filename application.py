@@ -2,7 +2,7 @@ import os
 import urllib.request
 import json
 
-from flask import Flask, session, render_template,url_for,request,redirect
+from flask import Flask, session, render_template,url_for,request,redirect,abort
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -112,3 +112,12 @@ def add_review():
         {"book": book, "user_id": user_id, "rating": rating, "review": review})
     db.commit()
     return redirect(url_for("details",book_id=book))
+
+@app.route("/api/<string:isbn>")
+def api(isbn):
+    bookdata=db.execute("SELECT book_id,name,author,year,isbn FROM books WHERE isbn=:isbn",{"isbn": isbn}).fetchone()
+    if bookdata==None:
+        abort(404)
+    reviews=db.execute("SELECT COUNT(*) AS cnt,AVG(rating) AS rating FROM reviews WHERE book=:book",{"book": bookdata.book_id}).fetchone()    
+    dict={"title": bookdata.name,"author": bookdata.author,"year": bookdata.year,"isbn": bookdata.isbn,"review_count": reviews.cnt,"average_score": float(reviews.rating)}
+    return json.dumps(dict)
